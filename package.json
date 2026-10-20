@@ -1,0 +1,50 @@
+{
+  "name": "sysdash",
+  "productName": "SysDash",
+  "version": "1.0.0",
+  "description": "Secure Electron system dashboard",
+  "main": "src/main/main.js",
+  "author": "Your Name",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env NODE_ENV=development electron .\"",
+    "build:renderer": "vite build",
+    "start": "npm run build:renderer && electron .",
+    "test": "jest",
+    "lint": "eslint src",
+    "dist": "npm run build:renderer && electron-builder --win --x64",
+    "dist:ci": "npm run build:renderer && electron-builder --win --x64 --publish never"
+  },
+  "dependencies": {
+    "systeminformation": "^5.23.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "concurrently": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.0",
+    "jest": "^29.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.4.0",
+    "wait-on": "^8.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "roots": ["<rootDir>/tests"]
+  },
+  "build": {
+    "appId": "com.example.sysdash",
+    "productName": "SysDash",
+    "directories": { "output": "release" },
+    "files": ["src/main/**", "src/preload/**", "dist/renderer/**", "package.json"],
+    "protocols": [{ "name": "SysDash", "schemes": ["myapp"] }],
+    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }] },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false
+    }
+  }
+}
